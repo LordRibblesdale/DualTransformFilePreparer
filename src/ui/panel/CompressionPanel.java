@@ -20,4 +20,8 @@ public class CompressionPanel extends JPanel {
    *
    * AbstractButton WLAction for action (compression or decompression)
    */
+
+    public CompressionPanel() {
+        super();
+    }
 }

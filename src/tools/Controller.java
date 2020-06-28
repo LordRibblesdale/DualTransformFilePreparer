@@ -9,7 +9,7 @@ public class Controller {
   private static final int BASE_RELEASE = 100;
   private static final int INCREMENTAL_RELEASE = 0;
   private static final int RELEASE = BASE_RELEASE + INCREMENTAL_RELEASE;
-  private static String applicationName = "Wavelet File Manager";
+  private final static String applicationName = "Wavelet File Manager";
 
   private static Settings settings;
   private static UpdateRepo updates;

@@ -45,7 +45,15 @@ public class FrameWindow extends JFrame {
     }
 
     mainTabbedPanel = new JTabbedPane();
-    //compressionPanel
+
+    compressionPanel = new CompressionPanel();
+    mainTabbedPanel.addTab(Controller.getLanguageText("compressionTab"), compressionPanel);
+
+    decompressionPanel = new DecompressionPanel();
+    mainTabbedPanel.addTab(Controller.getLanguageText("decompressionTab"), decompressionPanel);
+
+
+    add(mainTabbedPanel);
   }
 
   public void setTextBottomPanel(String s) {
