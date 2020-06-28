@@ -20,10 +20,20 @@ import static update.Status.CANCELLED;
 import static update.Status.COMPLETED;
 import static update.Status.DOWNLOADING;
 
-public class UpdateRepo {
+public class UpdateRepo extends Thread {
    private Timer t = null;
+   private final int current;
 
    public UpdateRepo(int current) {
+      this.current = current;
+   }
+
+   @Override
+   public void run() {
+      checkUpdateOnGithub();
+   }
+
+   private void checkUpdateOnGithub() {
       // TODO fix here
       String url = "https://api.github.com/repos/lordribblesdale/WaveletFileCompression/releases/latest";
       String downloadUrl = "https://github.com/lordribblesdale/WaveletFileCompression/releases/latest";
@@ -76,14 +86,14 @@ public class UpdateRepo {
                    .append(Controller.getLanguageText("askDownloadUpdate"));
 
                Object[] choice = {
-                       Controller.getLanguageText("downloadNow"),
-                       Controller.getLanguageText("openLink"),
-                       Controller.getLanguageText("doNothing")
+                   Controller.getLanguageText("downloadNow"),
+                   Controller.getLanguageText("openLink"),
+                   Controller.getLanguageText("doNothing")
                };
 
                int option = JOptionPane.showOptionDialog(Controller.getFrameWindow(), update.toString(),
-                       Controller.getLanguageText("availableUpdate"),
-                       JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, choice, choice[0]);
+                   Controller.getLanguageText("availableUpdate"),
+                   JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, choice, choice[0]);
 
                if (option != -1) {
                   if (choice[option] == choice[0]) {
@@ -131,6 +141,7 @@ public class UpdateRepo {
             default -> "ERROR";
          };
 
+         // TODO fix here
          newDownload[0] = ((float) update.getDownloaded() / 1000000);
          bar.setNote(statusString + " - " + ((newDownload[0] + "MB") + " - " + (((newDownload[0] - oldDownload[0]) * 1000 / 30 + "KB/s"))));
 

@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Settings implements Serializable, Path {
-    private static final long serialVersionUID = 10L;
+    private static final long serialVersionUID = 100L;
 
     private boolean useLookAndFeel;
     private Locale language;
