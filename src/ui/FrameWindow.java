@@ -11,6 +11,8 @@ import java.awt.*;
 public class FrameWindow extends JFrame {
   private JPanel bottomPanel;
   private JLabel notificationLabel;
+
+  private JButton panelButton;
   private WLAction button;
 
   private JTabbedPane mainTabbedPanel;
@@ -44,7 +46,13 @@ public class FrameWindow extends JFrame {
       setVisible(true);
     }
 
+    panelButton = new JButton(new WLAction());
+
     mainTabbedPanel = new JTabbedPane();
+    mainTabbedPanel.addChangeListener(changeListener_stateChanged -> {
+      panelButton.setText(mainTabbedPanel.getTitleAt(mainTabbedPanel.getSelectedIndex()));
+      // validate already included
+    });
 
     compressionPanel = new CompressionPanel();
     mainTabbedPanel.addTab(Controller.getLanguageText("compressionTab"), compressionPanel);
@@ -52,13 +60,32 @@ public class FrameWindow extends JFrame {
     decompressionPanel = new DecompressionPanel();
     mainTabbedPanel.addTab(Controller.getLanguageText("decompressionTab"), decompressionPanel);
 
+    panelButton.setText(mainTabbedPanel.getTitleAt(mainTabbedPanel.getSelectedIndex()));
 
     add(mainTabbedPanel);
+
+    add(panelButton, BorderLayout.PAGE_END);
+  }
+
+  public void setFileText(String text) {
+    compressionPanel.setLocationFileText(text);
+  }
+
+  public void setApproxFileText(String text) {
+    decompressionPanel.setApproxLocationTextFile(text);
+  }
+
+  public void setDetailFileText(String text) {
+    decompressionPanel.setDetailLocationTextFile(text);
   }
 
   public void setTextBottomPanel(String s) {
     notificationLabel.setText(s);
 
     validate();
+  }
+
+  public int getTabIndex() {
+    return mainTabbedPanel.getSelectedIndex();
   }
 }
