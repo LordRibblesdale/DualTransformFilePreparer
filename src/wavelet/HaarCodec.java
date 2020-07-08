@@ -18,62 +18,66 @@ public class HaarCodec {
         //private static XZOutputStream detailOutput;
 
         input = new BufferedInputStream(new FileInputStream(Controller.getFullName()));
-        approxOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".awf"));
-        detailOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".dwf"));
-        floatingValueOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".fav"));
-        //approxOutput = new XZOutputStream(new BufferedOutputStream(new FileOutputStream(Controller.getFileDirectory() + Controller.getFileName() + ".awf")), new LZMA2Options(LZMA2Options.MODE_NORMAL));
-        //detailOutput = new XZOutputStream(new BufferedOutputStream(new FileOutputStream(Controller.getFileDirectory() + Controller.getFileName() + ".dwf")), new LZMA2Options(LZMA2Options.MODE_NORMAL));
 
-        int[] indices = new int[8];
-        int indexStop = 0;
+        File folder = new File(Controller.getLocation() + Controller.getFileName() + "Folder");
 
-        while (input.available() > 0) {
-          int f2n = input.read();
-          int f2n1 = input.read();
+        if (folder.mkdirs()) {
+          approxOutput = new BufferedOutputStream(new FileOutputStream( folder.getPath() + File.separator + Controller.getFileName() + ".awf"));
+          detailOutput = new BufferedOutputStream(new FileOutputStream(folder.getPath() + File.separator + Controller.getFileName() + ".dwf"));
+          floatingValueOutput = new BufferedOutputStream(new FileOutputStream(folder.getPath() + File.separator + Controller.getFileName() + ".fav"));
+          //approxOutput = new XZOutputStream(new BufferedOutputStream(new FileOutputStream(Controller.getFileDirectory() + Controller.getFileName() + ".awf")), new LZMA2Options(LZMA2Options.MODE_NORMAL));
+          //detailOutput = new XZOutputStream(new BufferedOutputStream(new FileOutputStream(Controller.getFileDirectory() + Controller.getFileName() + ".dwf")), new LZMA2Options(LZMA2Options.MODE_NORMAL));
 
-          //TODO check here
-          if (f2n1 == -1) {
-            f2n1 = 0;
-          }
+          int[] indices = new int[8];
+          int indexStop = 0;
 
-          //System.out.println(f2n);
-          //System.out.println(f2n1);
-          //System.out.println((f2n + f2n1) *0.5f);
-          //System.out.println((f2n - f2n1) *0.5f);
-          //System.out.println();
+          while (input.available() > 0) {
+            int f2n = input.read();
+            int f2n1 = input.read();
 
-          // Save conditions > 127 && < -128
-          approxOutput.write((byte) ((f2n + f2n1) *0.5f));
-          detailOutput.write((byte) (((f2n - f2n1) + 128) *0.5f));
-          // TODO demonstrate duplicate here (floatApprox is equal to floatDetail)
-
-          indices[indexStop++] = (f2n + f2n1) % 2 == 0 ? 0 : 1;
-
-          if (indexStop == 8 || input.available() == 0) {
-            int value = 0;
-
-            for (int i = 0; i < indexStop; ++i) {
-              int base = 1;
-
-              for (int j = 0; j < i; ++j) {
-                base *= 2;
-              }
-
-              value += indices[i]*base;
+            //TODO check here
+            if (f2n1 == -1) {
+              f2n1 = 0;
             }
 
-            floatingValueOutput.write(value);
+            //System.out.println(f2n);
+            //System.out.println(f2n1);
+            //System.out.println((f2n + f2n1) *0.5f);
+            //System.out.println((f2n - f2n1) *0.5f);
+            //System.out.println();
 
-            indexStop = 0;
+            approxOutput.write((byte) ((f2n + f2n1) *0.5f));
+            detailOutput.write((byte) (((f2n - f2n1) + 128) *0.5f));
+            // TODO demonstrate duplicate here (floatApprox is equal to floatDetail)
+
+            indices[indexStop++] = (f2n + f2n1) % 2 == 0 ? 0 : 1;
+
+            if (indexStop == 8 || input.available() == 0) {
+              int value = 0;
+
+              for (int i = 0; i < indexStop; ++i) {
+                int base = 1;
+
+                for (int j = 0; j < i; ++j) {
+                  base *= 2;
+                }
+
+                value += indices[i]*base;
+              }
+
+              floatingValueOutput.write(value);
+
+              indexStop = 0;
+            }
           }
+
+          System.out.println("Finished");
+
+          input.close();
+          approxOutput.close();
+          detailOutput.close();
+          floatingValueOutput.close();
         }
-
-        System.out.println("Finished");
-
-        input.close();
-        approxOutput.close();
-        detailOutput.close();
-        floatingValueOutput.close();
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -118,6 +122,10 @@ public class HaarCodec {
           float f2n = (0.5f*(fn + dn));
           float f2n1 = (0.5f*(fn - dn));
 
+          System.out.println(f2n);
+          System.out.println(f2n1);
+          System.out.println();
+
           if (f2n < 0) {
             f2n += 256;
           } else if (f2n > 255) {
@@ -130,9 +138,9 @@ public class HaarCodec {
             f2n1 -= 256;
           }
 
-          System.out.println(f2n);
-          System.out.println(f2n1);
-          System.out.println();
+          //System.out.println(f2n);
+          //System.out.println(f2n1);
+          //System.out.println();
 
           output.write((byte) f2n);
           output.write((byte) f2n1);
