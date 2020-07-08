@@ -4,6 +4,8 @@ import tools.Controller;
 import ui.OpenFile;
 import ui.filter.AWFFilter;
 import ui.filter.DWFFilter;
+import ui.filter.FAVFilter;
+import ui.filter.FDVFilter;
 
 import javax.swing.*;
 
@@ -19,12 +21,16 @@ public class DecompressionPanel extends JPanel {
     // TODO complete here
     private JButton openApproxButton = new JButton(new OpenFile(new AWFFilter()));
     private JButton openDetailButton = new JButton(new OpenFile(new DWFFilter()));
+    private JButton openFloatingApproxButton = new JButton(new OpenFile(new FAVFilter()));
+    private JButton openFloatingDetailButton = new JButton(new OpenFile(new FDVFilter()));
 
     public DecompressionPanel() {
         super();
 
         locationApproxFile.setEditable(false);
         locationDetailFile.setEditable(false);
+        floatingLocationApproxFile.setEditable(false);
+        floatingLocationDetailFile.setEditable(false);
 
         add(inputApproxFile);
         add(locationApproxFile);
@@ -33,6 +39,14 @@ public class DecompressionPanel extends JPanel {
         add(inputDetailFile);
         add(locationDetailFile);
         add(openDetailButton);
+
+        add(floatingInputApproxFile);
+        add(floatingLocationApproxFile);
+        add(openFloatingApproxButton);
+
+        add(floatingInputDetailFile);
+        add(floatingLocationDetailFile);
+        add(openFloatingDetailButton);
 
         validate();
     }
@@ -44,6 +58,16 @@ public class DecompressionPanel extends JPanel {
 
     public void setDetailLocationTextFile(String text) {
         locationDetailFile.setText(text);
+        validate();
+    }
+
+    public void setFloatingApproxLocationTextFile(String text) {
+        floatingLocationApproxFile.setText(text);
+        validate();
+    }
+
+    public void setFloatingDetailLocationTextFile(String text) {
+        floatingLocationDetailFile.setText(text);
         validate();
     }
 }

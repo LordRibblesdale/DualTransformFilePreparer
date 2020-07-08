@@ -118,6 +118,8 @@ public class UpdateRepo extends Thread {
          if (e instanceof UnknownHostException) {
             Controller.setStatusNotification(Controller.getLanguageText("checkConnection"));
          }
+      } catch (StringIndexOutOfBoundsException e1) {
+
       }
    }
 

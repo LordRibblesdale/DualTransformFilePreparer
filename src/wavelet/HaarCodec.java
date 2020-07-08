@@ -8,7 +8,6 @@ import java.io.*;
 
 public class HaarCodec {
   private static double DIV_1_SQRT2 = Math.sqrt(2);
-  private static float FLOAT_DIV_1_SQRT2 = (float) DIV_1_SQRT2;
 
   public static void compressFile() {
     if (Controller.getFullName() != null) {
@@ -61,15 +60,22 @@ public class HaarCodec {
 
           //buffer = ByteBuffer.allocate(4).putFloat(FLOAT_DIV_1_SQRT2 * (f2n + f2n1) *0.5f).array();
 
-          System.out.println((byte) ((f2n + f2n1)*0.5f));
-          System.out.println((byte) ((f2n - f2n1)*0.5f));
+          System.out.println(f2n);
+          System.out.println(f2n1);
+          System.out.println((f2n + f2n1) *0.5f);
+          System.out.println((byte) ((f2n + f2n1) *0.5f));
+          System.out.println((f2n - f2n1) *0.5f);
+          System.out.println((byte)(((f2n - f2n1) + 128) *0.5));
           System.out.println();
 
+          // Save conditions > 127 && < -128
           approxOutput.write((byte) ((f2n + f2n1) *0.5f));
           floatApproxValueOutput.write((f2n + f2n1) % 2 == 0 ? 0 : 1);
 
-          detailOutput.write((byte) ((f2n - f2n1) *0.5f));
+          detailOutput.write((byte) (((f2n - f2n1) + 128) *0.5f));
           floatDetailValueOutput.write((f2n - f2n1) % 2 == 0 ? 0 : 1);
+
+          // TODO save as [-128,127] to [0, 255]
 
           /*
 
@@ -140,39 +146,35 @@ public class HaarCodec {
 
         BufferedInputStream approxInput;
         BufferedInputStream detailInput;
-        //BufferedInputStream floatApproxValueInput;
-        //BufferedInputStream floatDetailValueInput;
-        BufferedOutputStream output = null;
+        BufferedInputStream floatApproxValueInput;
+        BufferedInputStream floatDetailValueInput;
+        BufferedOutputStream output;
 
-        approxInput = new BufferedInputStream(new FileInputStream(Controller.getApproxLocation() + Controller.getFileName()));
-        detailInput = new BufferedInputStream(new FileInputStream(Controller.getDetailLocation() + Controller.getFileName()));
-        //floatApproxValueOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName()));
-        //floatDetailValueOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName()));
-        output = new BufferedOutputStream(new FileOutputStream("test"));
-
-        byte buffer;
+        approxInput = new BufferedInputStream(new FileInputStream(Controller.getFullApproxName()));
+        detailInput = new BufferedInputStream(new FileInputStream(Controller.getFullDetailName()));
+        floatApproxValueInput = new BufferedInputStream(new FileInputStream(Controller.getFloatingFullApproxName()));
+        floatDetailValueInput = new BufferedInputStream(new FileInputStream(Controller.getFloatingFullDetailName()));
+        output = new BufferedOutputStream(new FileOutputStream(Controller.getApproxLocation() + "test"));
 
         while (approxInput.available() > 0 && detailInput.available() > 0) {
-          int f2n = approxInput.read();
-          int d2n = detailInput.read();
-          //int floatApproxValue =
+          int fn = approxInput.read()*2;
+          int dn = detailInput.read()*2 -128;
+          int floatApproxValue = floatApproxValueInput.read();
+          int floatDetailValue = floatDetailValueInput.read();
 
           /*
           if (f2n1 == -1) {
             f2n1 = 0;
             ++lastNullByteCount;
           }
+           */
 
-          System.out.println(f2n);
-          System.out.println(f2n1);
-          System.out.println(f2n + f2n1);
-          System.out.println((byte) ((f2n + f2n1)*0.5f));
-          System.out.println((byte) ((f2n - f2n1)*0.5f));
+          System.out.println(0.5f*((fn + 0.5f*floatApproxValue) + (dn + 0.5f*floatDetailValue)));
+          System.out.println(0.5f*((fn + 0.5f*floatApproxValue) - (dn + 0.5f*floatDetailValue)));
           System.out.println();
-          */
 
-          output.write((byte) (f2n + d2n/* + */));
-          output.write((byte) (f2n - d2n));
+          output.write((byte) (0.5f*((fn + 0.5f*floatApproxValue) + (dn + 0.5f*floatDetailValue))));
+          output.write((byte) (0.5f*((fn + 0.5f*floatApproxValue) - (dn + 0.5f*floatDetailValue))));
         }
 
         System.out.println("Finished");

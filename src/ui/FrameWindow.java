@@ -37,13 +37,6 @@ public class FrameWindow extends JFrame {
 
       notificationLabel = new JLabel();
       add(notificationLabel, BorderLayout.PAGE_END);
-
-      setMinimumSize(new Dimension(
-          (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.2),
-          (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()*0.55)));
-      setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-      setLocationRelativeTo(null);
-      setVisible(true);
     }
 
     panelButton = new JButton(new WLAction());
@@ -65,6 +58,13 @@ public class FrameWindow extends JFrame {
     add(mainTabbedPanel);
 
     add(panelButton, BorderLayout.PAGE_END);
+
+    setMinimumSize(new Dimension(
+        (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.2),
+        (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()*0.55)));
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);
+    setVisible(true);
   }
 
   public void setFileText(String text) {
@@ -73,10 +73,22 @@ public class FrameWindow extends JFrame {
 
   public void setApproxFileText(String text) {
     decompressionPanel.setApproxLocationTextFile(text);
+
+    validate();
   }
 
   public void setDetailFileText(String text) {
     decompressionPanel.setDetailLocationTextFile(text);
+
+    validate();
+  }
+
+  public void setFloatingApproxFileText(String text) {
+    decompressionPanel.setFloatingApproxLocationTextFile(text);
+  }
+
+  public void setFloatingDetailFileText(String text) {
+    decompressionPanel.setFloatingDetailLocationTextFile(text);
   }
 
   public void setTextBottomPanel(String s) {

@@ -28,6 +28,14 @@ public class Controller {
   private static String fileDetailName = null;
   private static String detailLocation = null;
 
+  private static String floatingFullApproxName = null;
+  private static String floatingFileApproxName = null;
+  private static String floatingApproxLocation = null;
+
+  private static String floatingFullDetailName = null;
+  private static String floatingFileDetailName = null;
+  private static String floatingDetailLocation = null;
+
   public static void initialize() {
     if (!isInitialized) {
       settings = new Settings();
@@ -127,7 +135,7 @@ public class Controller {
   public static void setFullDetailName(String fullDetailName) {
     Controller.fullDetailName = fullDetailName;
 
-    frameWindow.setDetailFileText(location);
+    frameWindow.setDetailFileText(fullDetailName);
   }
 
   public static String getFileDetailName() {
@@ -144,5 +152,57 @@ public class Controller {
 
   public static void setDetailLocation(String detailLocation) {
     Controller.detailLocation = detailLocation;
+  }
+
+  public static String getFloatingFullApproxName() {
+    return floatingFullApproxName;
+  }
+
+  public static void setFloatingFullApproxName(String floatingFullApproxName) {
+    Controller.floatingFullApproxName = floatingFullApproxName;
+
+    frameWindow.setFloatingApproxFileText(floatingFullApproxName);
+  }
+
+  public static String getFloatingFileApproxName() {
+    return floatingFileApproxName;
+  }
+
+  public static void setFloatingFileApproxName(String floatingFileApproxName) {
+    Controller.floatingFileApproxName = floatingFileApproxName;
+  }
+
+  public static String getFloatingApproxLocation() {
+    return floatingApproxLocation;
+  }
+
+  public static void setFloatingApproxLocation(String floatingApproxLocation) {
+    Controller.floatingApproxLocation = floatingApproxLocation;
+  }
+
+  public static String getFloatingFullDetailName() {
+    return floatingFullDetailName;
+  }
+
+  public static void setFloatingFullDetailName(String floatingFullDetailName) {
+    Controller.floatingFullDetailName = floatingFullDetailName;
+
+    frameWindow.setFloatingDetailFileText(floatingFullDetailName);
+  }
+
+  public static String getFloatingFileDetailName() {
+    return floatingFileDetailName;
+  }
+
+  public static void setFloatingFileDetailName(String floatingFileDetailName) {
+    Controller.floatingFileDetailName = floatingFileDetailName;
+  }
+
+  public static String getFloatingDetailLocation() {
+    return floatingDetailLocation;
+  }
+
+  public static void setFloatingDetailLocation(String floatingDetailLocation) {
+    Controller.floatingDetailLocation = floatingDetailLocation;
   }
 }
