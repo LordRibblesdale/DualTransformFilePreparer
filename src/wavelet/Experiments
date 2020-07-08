@@ -1,0 +1,52 @@
+/*
+byte[] doubleByte = new byte[8];
+long longTransformValue = Double.doubleToLongBits(DIV_1_SQRT2 * (f2n + f2n1));
+
+for (int i = 0; i < 8; ++i) {
+  doubleByte[i] = (byte) ((longTransformValue >> ((7 - i) * 8)) & 0xff);
+  approxOutput.write(doubleByte[i]);
+}
+
+longTransformValue = Double.doubleToLongBits(DIV_1_SQRT2 * (f2n + f2n1));
+
+for (int i = 0; i < 8; ++i) {
+  doubleByte[i] = (byte) ((longTransformValue >> ((7 - i) * 8)) & 0xff);
+  detailOutput.write(doubleByte[i]);
+}
+*/
+
+//buffer = ByteBuffer.allocate(4).putFloat(FLOAT_DIV_1_SQRT2 * (f2n + f2n1) *0.5f).array();
+
+/*
+//buffer = ByteBuffer.allocate(4).putFloat(FLOAT_DIV_1_SQRT2 * (f2n - f2n1) *0.5f).array();
+buffer = ByteBuffer.allocate(4).putInt(f2n + f2n1).array();
+approxOutput.write(buffer);
+buffer = ByteBuffer.allocate(4).putInt(f2n - f2n1).array();
+detailOutput.write(buffer);
+*/
+/*
+byte[] doubleByte = new byte[4];
+int longTransformValue = Float.floatToIntBits(FLOAT_DIV_1_SQRT2 * (f2n + f2n1));
+for (int i = 0; i < 4; ++i) {
+  doubleByte[i] = (byte) ((longTransformValue >> ((3 - i) * 4)) & 0xff);
+  approxOutput.write(doubleByte[i]);
+}
+longTransformValue = Float.floatToIntBits(FLOAT_DIV_1_SQRT2 * (f2n - f2n1));
+for (int i = 0; i < 4; ++i) {
+  doubleByte[i] = (byte) ((longTransformValue >> ((3 - i) * 4)) & 0xff);
+  detailOutput.write(doubleByte[i]);
+}
+ */
+/*
+byte[] intByte = new byte[4];
+int transformValue = f2n + f2n1;
+for (int i = 0; i < 4; ++i) {
+  intByte[i] = (byte) ((transformValue >> ((3 - i) * 4)) & 0xff);
+  approxOutput.write(intByte[i]);
+}
+transformValue = f2n - f2n1;
+for (int i = 0; i < 4; ++i) {
+  intByte[i] = (byte) ((transformValue >> ((3 - i) * 4)) & 0xff);
+  detailOutput.write(intByte[i]);
+}
+ */
