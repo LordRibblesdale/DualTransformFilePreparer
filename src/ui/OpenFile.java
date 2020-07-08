@@ -4,7 +4,6 @@ import tools.Controller;
 import ui.filter.AWFFilter;
 import ui.filter.DWFFilter;
 import ui.filter.FAVFilter;
-import ui.filter.FDVFilter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -42,8 +41,6 @@ public class OpenFile extends AbstractAction implements ui.Path {
             fileChooser.addChoosableFileFilter(dwfFilter);
          } else if (filter instanceof FAVFilter favFilter) {
             fileChooser.addChoosableFileFilter(favFilter);
-         } else if (filter instanceof FDVFilter fdvFilter) {
-            fileChooser.addChoosableFileFilter(fdvFilter);
          }
       } else {
          fileChooser.setAcceptAllFileFilterUsed(false);
@@ -64,14 +61,9 @@ public class OpenFile extends AbstractAction implements ui.Path {
                Controller.setDetailLocation(fileChooser.getSelectedFile().getParent() + File.separator);
                Controller.setFileDetailName(fileChooser.getSelectedFile().getName());
             } else if (filter instanceof FAVFilter) {
-               Controller.setFloatingFullApproxName(fileChooser.getSelectedFile().getPath());
-               Controller.setFloatingApproxLocation(fileChooser.getSelectedFile().getParent() + File.separator);
-               Controller.setFloatingFileApproxName(fileChooser.getSelectedFile().getName());
-            } else if (filter instanceof FDVFilter) {
-               Controller.setFloatingFullDetailName(fileChooser.getSelectedFile().getPath());
-               Controller.setFloatingDetailLocation(fileChooser.getSelectedFile().getParent() + File.separator);
-               Controller.setFloatingFileDetailName(fileChooser.getSelectedFile().getName());
-
+               Controller.setFloatingAbsolutePath(fileChooser.getSelectedFile().getPath());
+               Controller.setFloatingValuesDirectory(fileChooser.getSelectedFile().getParent() + File.separator);
+               Controller.setFloatingValuesFileName(fileChooser.getSelectedFile().getName());
             }
          } else {
             Controller.setFullName(fileChooser.getSelectedFile().getPath());

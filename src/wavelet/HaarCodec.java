@@ -7,27 +7,25 @@ import tools.Controller;
 import java.io.*;
 
 public class HaarCodec {
-  private static double DIV_1_SQRT2 = Math.sqrt(2);
-
   public static void compressFile() {
     if (Controller.getFullName() != null) {
       try {
         BufferedInputStream input = null;
         BufferedOutputStream approxOutput;
         BufferedOutputStream detailOutput;
-        BufferedOutputStream floatApproxValueOutput;
-        BufferedOutputStream floatDetailValueOutput;
+        BufferedOutputStream floatingValueOutput;
         //private static XZOutputStream approxOutput;
         //private static XZOutputStream detailOutput;
 
         input = new BufferedInputStream(new FileInputStream(Controller.getFullName()));
         approxOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".awf"));
         detailOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".dwf"));
-        floatApproxValueOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".fav"));
-        floatDetailValueOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".fdv"));
+        floatingValueOutput = new BufferedOutputStream(new FileOutputStream(Controller.getLocation() + Controller.getFileName() + ".fav"));
         //approxOutput = new XZOutputStream(new BufferedOutputStream(new FileOutputStream(Controller.getFileDirectory() + Controller.getFileName() + ".awf")), new LZMA2Options(LZMA2Options.MODE_NORMAL));
         //detailOutput = new XZOutputStream(new BufferedOutputStream(new FileOutputStream(Controller.getFileDirectory() + Controller.getFileName() + ".dwf")), new LZMA2Options(LZMA2Options.MODE_NORMAL));
 
+        int[] indices = new int[8];
+        int indexStop = 0;
 
         while (input.available() > 0) {
           int f2n = input.read();
@@ -38,21 +36,36 @@ public class HaarCodec {
             f2n1 = 0;
           }
 
-          System.out.println(f2n);
-          System.out.println(f2n1);
-          System.out.println((f2n + f2n1) *0.5f);
-          System.out.println((f2n - f2n1) *0.5f);
+          //System.out.println(f2n);
+          //System.out.println(f2n1);
+          //System.out.println((f2n + f2n1) *0.5f);
+          //System.out.println((f2n - f2n1) *0.5f);
           //System.out.println();
 
           // Save conditions > 127 && < -128
           approxOutput.write((byte) ((f2n + f2n1) *0.5f));
-          floatApproxValueOutput.write((f2n + f2n1) % 2 == 0 ? 0 : 1);
-
           detailOutput.write((byte) (((f2n - f2n1) + 128) *0.5f));
           // TODO demonstrate duplicate here (floatApprox is equal to floatDetail)
-          floatDetailValueOutput.write((f2n - f2n1) % 2 == 0 ? 0 : 1);
 
-          // TODO save as [-128,127] to [0, 255]
+          indices[indexStop++] = (f2n + f2n1) % 2 == 0 ? 0 : 1;
+
+          if (indexStop == 8 || input.available() == 0) {
+            int value = 0;
+
+            for (int i = 0; i < indexStop; ++i) {
+              int base = 1;
+
+              for (int j = 0; j < i; ++j) {
+                base *= 2;
+              }
+
+              value += indices[i]*base;
+            }
+
+            floatingValueOutput.write(value);
+
+            indexStop = 0;
+          }
         }
 
         System.out.println("Finished");
@@ -60,8 +73,7 @@ public class HaarCodec {
         input.close();
         approxOutput.close();
         detailOutput.close();
-        floatApproxValueOutput.close();
-        floatDetailValueOutput.close();
+        floatingValueOutput.close();
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -73,34 +85,32 @@ public class HaarCodec {
   public static void decompressFile() {
     if (Controller.getFullApproxName() != null && Controller.getFullDetailName() != null) {
       try {
-        int lastNullByteCount = 0;
-
         BufferedInputStream approxInput;
         BufferedInputStream detailInput;
-        BufferedInputStream floatApproxValueInput;
-        BufferedInputStream floatDetailValueInput;
+        BufferedInputStream floatingValueInput;
         BufferedOutputStream output;
 
         approxInput = new BufferedInputStream(new FileInputStream(Controller.getFullApproxName()));
         detailInput = new BufferedInputStream(new FileInputStream(Controller.getFullDetailName()));
-        floatApproxValueInput = new BufferedInputStream(new FileInputStream(Controller.getFloatingFullApproxName()));
-        floatDetailValueInput = new BufferedInputStream(new FileInputStream(Controller.getFloatingFullDetailName()));
+        floatingValueInput = new BufferedInputStream(new FileInputStream(Controller.getFloatingAbsolutePath()));
         output = new BufferedOutputStream(new FileOutputStream(Controller.getApproxLocation() + "test"));
 
+        int indexStop = 0;
+        int floatingValue = 0;
+        boolean isFirstCycle = true;
+
         while (approxInput.available() > 0 && detailInput.available() > 0) {
-          int floatApproxValue = floatApproxValueInput.read();
-          int floatDetailValue = floatDetailValueInput.read();
+          if (indexStop == 8 || isFirstCycle) {
+            floatingValue = floatingValueInput.read();
+
+            isFirstCycle = false;
+            indexStop = 0;
+          }
 
           // TODO check if *2 is necessary
-          int fn = (int) ((approxInput.read() + 0.5f*floatApproxValue)*2);
-          int dn = (int) ((detailInput.read() + 0.5f*floatDetailValue)*2) -128;
-
-          /*
-          if (f2n1 == -1) {
-            f2n1 = 0;
-            ++lastNullByteCount;
-          }
-           */
+          float tmp = 0.5f * ((Integer.parseUnsignedInt(Integer.toBinaryString(floatingValue), 2) >> indexStop++) & 1);
+          int fn = (int) ((approxInput.read() + tmp)*2);
+          int dn = (int) ((detailInput.read() + tmp)*2) -128;
 
           //System.out.println(fn);
           //System.out.println(dn);
@@ -110,7 +120,7 @@ public class HaarCodec {
 
           if (f2n < 0) {
             f2n += 256;
-          } else if (f2n > 256) {
+          } else if (f2n > 255) {
             f2n -= 256;
           }
 
@@ -135,8 +145,7 @@ public class HaarCodec {
 
         approxInput.close();
         detailInput.close();
-        floatApproxValueInput.close();
-        floatDetailValueInput.close();
+        floatingValueInput.close();
         output.close();
       } catch (IOException e) {
         e.printStackTrace();

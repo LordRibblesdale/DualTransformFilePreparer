@@ -28,13 +28,9 @@ public class Controller {
   private static String fileDetailName = null;
   private static String detailLocation = null;
 
-  private static String floatingFullApproxName = null;
-  private static String floatingFileApproxName = null;
-  private static String floatingApproxLocation = null;
-
-  private static String floatingFullDetailName = null;
-  private static String floatingFileDetailName = null;
-  private static String floatingDetailLocation = null;
+  private static String floatingAbsolutePath = null;
+  private static String floatingValuesFileName = null;
+  private static String floatingValuesDirectory = null;
 
   public static void initialize() {
     if (!isInitialized) {
@@ -154,55 +150,29 @@ public class Controller {
     Controller.detailLocation = detailLocation;
   }
 
-  public static String getFloatingFullApproxName() {
-    return floatingFullApproxName;
+  public static String getFloatingAbsolutePath() {
+    return floatingAbsolutePath;
   }
 
-  public static void setFloatingFullApproxName(String floatingFullApproxName) {
-    Controller.floatingFullApproxName = floatingFullApproxName;
+  public static void setFloatingAbsolutePath(String floatingAbsolutePath) {
+    Controller.floatingAbsolutePath = floatingAbsolutePath;
 
-    frameWindow.setFloatingApproxFileText(floatingFullApproxName);
+    frameWindow.setFloatingPathToText(floatingAbsolutePath);
   }
 
-  public static String getFloatingFileApproxName() {
-    return floatingFileApproxName;
+  public static String getFloatingValuesFileName() {
+    return floatingValuesFileName;
   }
 
-  public static void setFloatingFileApproxName(String floatingFileApproxName) {
-    Controller.floatingFileApproxName = floatingFileApproxName;
+  public static void setFloatingValuesFileName(String floatingValuesFileName) {
+    Controller.floatingValuesFileName = floatingValuesFileName;
   }
 
-  public static String getFloatingApproxLocation() {
-    return floatingApproxLocation;
+  public static String getFloatingValuesDirectory() {
+    return floatingValuesDirectory;
   }
 
-  public static void setFloatingApproxLocation(String floatingApproxLocation) {
-    Controller.floatingApproxLocation = floatingApproxLocation;
-  }
-
-  public static String getFloatingFullDetailName() {
-    return floatingFullDetailName;
-  }
-
-  public static void setFloatingFullDetailName(String floatingFullDetailName) {
-    Controller.floatingFullDetailName = floatingFullDetailName;
-
-    frameWindow.setFloatingDetailFileText(floatingFullDetailName);
-  }
-
-  public static String getFloatingFileDetailName() {
-    return floatingFileDetailName;
-  }
-
-  public static void setFloatingFileDetailName(String floatingFileDetailName) {
-    Controller.floatingFileDetailName = floatingFileDetailName;
-  }
-
-  public static String getFloatingDetailLocation() {
-    return floatingDetailLocation;
-  }
-
-  public static void setFloatingDetailLocation(String floatingDetailLocation) {
-    Controller.floatingDetailLocation = floatingDetailLocation;
+  public static void setFloatingValuesDirectory(String floatingValuesDirectory) {
+    Controller.floatingValuesDirectory = floatingValuesDirectory;
   }
 }

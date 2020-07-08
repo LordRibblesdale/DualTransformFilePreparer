@@ -34,9 +34,6 @@ public class FrameWindow extends JFrame {
             "LookAndFeel UserController00 V: " + e.getStackTrace()[0].getLineNumber(),
             JOptionPane.ERROR_MESSAGE);
       }
-
-      notificationLabel = new JLabel();
-      add(notificationLabel, BorderLayout.PAGE_END);
     }
 
     panelButton = new JButton(new WLAction());
@@ -57,7 +54,11 @@ public class FrameWindow extends JFrame {
 
     add(mainTabbedPanel);
 
-    add(panelButton, BorderLayout.PAGE_END);
+    bottomPanel = new JPanel();
+    notificationLabel = new JLabel();
+    bottomPanel.add(notificationLabel);
+    bottomPanel.add(panelButton);
+    add(bottomPanel, BorderLayout.PAGE_END);
 
     setMinimumSize(new Dimension(
         (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.2),
@@ -72,23 +73,21 @@ public class FrameWindow extends JFrame {
   }
 
   public void setApproxFileText(String text) {
-    decompressionPanel.setApproxLocationTextFile(text);
+    decompressionPanel.setApproxPathToTextField(text);
 
     validate();
   }
 
   public void setDetailFileText(String text) {
-    decompressionPanel.setDetailLocationTextFile(text);
+    decompressionPanel.setDetailPathToTextField(text);
 
     validate();
   }
 
-  public void setFloatingApproxFileText(String text) {
-    decompressionPanel.setFloatingApproxLocationTextFile(text);
-  }
+  public void setFloatingPathToText(String text) {
+    decompressionPanel.setFloatingPathToTextField(text);
 
-  public void setFloatingDetailFileText(String text) {
-    decompressionPanel.setFloatingDetailLocationTextFile(text);
+    validate();
   }
 
   public void setTextBottomPanel(String s) {
