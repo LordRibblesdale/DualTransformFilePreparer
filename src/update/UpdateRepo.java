@@ -35,8 +35,8 @@ public class UpdateRepo extends Thread {
 
    private void checkUpdateOnGithub() {
       // TODO fix here
-      String url = "https://api.github.com/repos/lordribblesdale/WaveletFileCompression/releases/latest";
-      String downloadUrl = "https://github.com/lordribblesdale/WaveletFileCompression/releases/latest";
+      String url = "https://api.github.com/repos/lordribblesdale/DualTransformFilePreparer/releases/latest";
+      String downloadUrl = "https://github.com/lordribblesdale/DualTransformFilePreparer/releases/latest";
       String json;
       String jsonVersion;
       String jsonBody;

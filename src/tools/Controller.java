@@ -16,21 +16,14 @@ public class Controller {
 
   private static FrameWindow frameWindow;
 
+  // TODO optimise double variables usage (example: File()?)
   private static String fullName = null;
   private static String fileName = null;
   private static String location = null;
 
-  private static String fullApproxName = null;
-  private static String fileApproxName = null;
-  private static String approxLocation = null;
-
-  private static String fullDetailName = null;
-  private static String fileDetailName = null;
-  private static String detailLocation = null;
-
-  private static String floatingAbsolutePath = null;
-  private static String floatingValuesFileName = null;
-  private static String floatingValuesDirectory = null;
+  private static String fullTransformedName = null;
+  private static String fileTransformedName = null;
+  private static String transformedLocation = null;
 
   public static void initialize() {
     if (!isInitialized) {
@@ -98,81 +91,29 @@ public class Controller {
     Controller.location = location;
   }
 
-  public static String getFullApproxName() {
-    return fullApproxName;
+  public static String getFullTransformedName() {
+    return fullTransformedName;
   }
 
-  public static void setFullApproxName(String fullApproxName) {
-    Controller.fullApproxName = fullApproxName;
+  public static void setFullTransformedName(String fullTransformedName) {
+    Controller.fullTransformedName = fullTransformedName;
 
-    frameWindow.setApproxFileText(fullApproxName);
+    frameWindow.setTransformedFileText(fullTransformedName);
   }
 
-  public static String getFileApproxName() {
-    return fileApproxName;
+  public static String getFileTransformedName() {
+    return fileTransformedName;
   }
 
-  public static void setFileApproxName(String fileApproxName) {
-    Controller.fileApproxName = fileApproxName;
+  public static void setFileTransformedName(String fileTransformedName) {
+    Controller.fileTransformedName = fileTransformedName;
   }
 
-  public static String getApproxLocation() {
-    return approxLocation;
+  public static String getTransformedLocation() {
+    return transformedLocation;
   }
 
-  public static void setApproxLocation(String approxLocation) {
-    Controller.approxLocation = approxLocation;
-  }
-
-  public static String getFullDetailName() {
-    return fullDetailName;
-  }
-
-  public static void setFullDetailName(String fullDetailName) {
-    Controller.fullDetailName = fullDetailName;
-
-    frameWindow.setDetailFileText(fullDetailName);
-  }
-
-  public static String getFileDetailName() {
-    return fileDetailName;
-  }
-
-  public static void setFileDetailName(String fileDetailName) {
-    Controller.fileDetailName = fileDetailName;
-  }
-
-  public static String getDetailLocation() {
-    return detailLocation;
-  }
-
-  public static void setDetailLocation(String detailLocation) {
-    Controller.detailLocation = detailLocation;
-  }
-
-  public static String getFloatingAbsolutePath() {
-    return floatingAbsolutePath;
-  }
-
-  public static void setFloatingAbsolutePath(String floatingAbsolutePath) {
-    Controller.floatingAbsolutePath = floatingAbsolutePath;
-
-    frameWindow.setFloatingPathToText(floatingAbsolutePath);
-  }
-
-  public static String getFloatingValuesFileName() {
-    return floatingValuesFileName;
-  }
-
-  public static void setFloatingValuesFileName(String floatingValuesFileName) {
-    Controller.floatingValuesFileName = floatingValuesFileName;
-  }
-
-  public static String getFloatingValuesDirectory() {
-    return floatingValuesDirectory;
-  }
-
-  public static void setFloatingValuesDirectory(String floatingValuesDirectory) {
-    Controller.floatingValuesDirectory = floatingValuesDirectory;
+  public static void setTransformedLocation(String transformedLocation) {
+    Controller.transformedLocation = transformedLocation;
   }
 }

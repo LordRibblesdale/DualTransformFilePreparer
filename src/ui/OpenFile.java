@@ -1,9 +1,7 @@
 package ui;
 
 import tools.Controller;
-import ui.filter.AWFFilter;
-import ui.filter.DWFFilter;
-import ui.filter.FAVFilter;
+import ui.filter.DTFFilter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -35,35 +33,22 @@ public class OpenFile extends AbstractAction implements ui.Path {
       if (filter != null) {
          fileChooser.setAcceptAllFileFilterUsed(false);
 
-         if (filter instanceof AWFFilter awfFilter) {
-            fileChooser.addChoosableFileFilter(awfFilter);
-         } else if (filter instanceof DWFFilter dwfFilter) {
-            fileChooser.addChoosableFileFilter(dwfFilter);
-         } else if (filter instanceof FAVFilter favFilter) {
-            fileChooser.addChoosableFileFilter(favFilter);
+         if (filter instanceof DTFFilter dtfFilter) {
+            fileChooser.addChoosableFileFilter(dtfFilter);
          }
       } else {
-         fileChooser.setAcceptAllFileFilterUsed(false);
+         fileChooser.setAcceptAllFileFilterUsed(true);
          fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       }
 
       int res = fileChooser.showOpenDialog(Controller.getFrameWindow());
 
       if (res == JFileChooser.APPROVE_OPTION) {
-
          if (filter != null) {
-            if (filter instanceof AWFFilter) {
-               Controller.setFullApproxName(fileChooser.getSelectedFile().getPath());
-               Controller.setApproxLocation(fileChooser.getSelectedFile().getParent() + File.separator);
-               Controller.setFileName(fileChooser.getSelectedFile().getName());
-            } else if (filter instanceof DWFFilter) {
-               Controller.setFullDetailName(fileChooser.getSelectedFile().getPath());
-               Controller.setDetailLocation(fileChooser.getSelectedFile().getParent() + File.separator);
-               Controller.setFileDetailName(fileChooser.getSelectedFile().getName());
-            } else if (filter instanceof FAVFilter) {
-               Controller.setFloatingAbsolutePath(fileChooser.getSelectedFile().getPath());
-               Controller.setFloatingValuesDirectory(fileChooser.getSelectedFile().getParent() + File.separator);
-               Controller.setFloatingValuesFileName(fileChooser.getSelectedFile().getName());
+            if (filter instanceof DTFFilter) {
+               Controller.setFullTransformedName(fileChooser.getSelectedFile().getPath());
+               Controller.setTransformedLocation(fileChooser.getSelectedFile().getParent() + File.separator);
+               Controller.setFileTransformedName(fileChooser.getSelectedFile().getName());
             }
          } else {
             Controller.setFullName(fileChooser.getSelectedFile().getPath());

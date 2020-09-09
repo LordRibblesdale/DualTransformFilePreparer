@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/WaveletFileCompression.iml" filepath="$PROJECT_DIR$/.idea/WaveletFileCompression.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/DualTransformFilePreparer.iml" filepath="$PROJECT_DIR$/.idea/DualTransformFilePreparer.iml" />
     </modules>
   </component>
 </project>

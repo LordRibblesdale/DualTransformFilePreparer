@@ -2,8 +2,8 @@ package ui;
 
 import tools.Controller;
 import ui.button.WLAction;
-import ui.panel.CompressionPanel;
-import ui.panel.DecompressionPanel;
+import ui.panel.FileManagementPanel;
+import ui.panel.PanelType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +13,10 @@ public class FrameWindow extends JFrame {
   private JLabel notificationLabel;
 
   private JButton panelButton;
-  private WLAction button;
 
   private JTabbedPane mainTabbedPanel;
-  private CompressionPanel compressionPanel;
-  private DecompressionPanel decompressionPanel;
+  private FileManagementPanel outputFileManagementPanel;
+  private FileManagementPanel inputFileManagementPanel;
 
   // Add a menu for update asking
 
@@ -44,11 +43,10 @@ public class FrameWindow extends JFrame {
       // validate already included
     });
 
-    compressionPanel = new CompressionPanel();
-    mainTabbedPanel.addTab(Controller.getLanguageText("compressionTab"), compressionPanel);
-
-    decompressionPanel = new DecompressionPanel();
-    mainTabbedPanel.addTab(Controller.getLanguageText("decompressionTab"), decompressionPanel);
+    outputFileManagementPanel = new FileManagementPanel(PanelType.DUAL_TRANSFORM);
+    mainTabbedPanel.addTab(Controller.getLanguageText("outputTransformTab"), outputFileManagementPanel);
+    inputFileManagementPanel = new FileManagementPanel(PanelType.ANTI_DUAL_TRANSFORM);
+    mainTabbedPanel.addTab(Controller.getLanguageText("inputAntiTransformTab"), inputFileManagementPanel);
 
     panelButton.setText(mainTabbedPanel.getTitleAt(mainTabbedPanel.getSelectedIndex()));
 
@@ -69,25 +67,11 @@ public class FrameWindow extends JFrame {
   }
 
   public void setFileText(String text) {
-    compressionPanel.setLocationFileText(text);
+    outputFileManagementPanel.setLocationFileText(text);
   }
 
-  public void setApproxFileText(String text) {
-    decompressionPanel.setApproxPathToTextField(text);
-
-    validate();
-  }
-
-  public void setDetailFileText(String text) {
-    decompressionPanel.setDetailPathToTextField(text);
-
-    validate();
-  }
-
-  public void setFloatingPathToText(String text) {
-    decompressionPanel.setFloatingPathToTextField(text);
-
-    validate();
+  public void setTransformedFileText(String text) {
+    inputFileManagementPanel.setLocationFileText(text);
   }
 
   public void setTextBottomPanel(String s) {

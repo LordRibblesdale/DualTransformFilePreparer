@@ -3,8 +3,8 @@ package ui.filter;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
-public class DWFFilter extends FileFilter {
-   static String ext = "dwf";
+public class DTFFilter extends FileFilter {
+   public static final String ext = "dtf";
 
    @Override
    public boolean accept(File f) {
